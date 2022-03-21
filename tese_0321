@@ -52,3 +52,44 @@ const int Bitmap::bmap[10][R] = {
 	{15,8,15,9,15},{15,1,2,4,8},{15,9,15,9,15},
 	{15,9,15,1,15}
 };
+ostream& operator<<(ostream& os, Bitmap item) {
+	string number = item.snum;
+	auto L = number.size();
+	string::size_type j = 0, num, e = 0;
+	stringstream input;
+	int w=item.scale,k,ww=item.scale;
+	
+	for ( ; e < 5; ++e) {
+	  for(;ww>=1;--ww){
+		do {
+			input << number[j];
+			input >> num;
+			input.clear();
+			k = item.bmap[num][e];
+
+			for (int b = 4, temp = 0; b >=0; --b) {
+				w = item.scale;
+				while (w >= 1) {
+					temp = (k >> b);
+					if (temp % 2 == 0)
+						cout << " ";
+					else
+						cout << number[j];
+					--w;
+				}
+			}
+			++j;
+		}while (j < L);
+		j = 0;
+		cout << endl;
+	  }
+	  ww=item.scale;
+	}
+
+	return os;
+};
+
+Bitmap operator*(Bitmap item,int a){
+  item.scale*=a;
+  return item;
+}
