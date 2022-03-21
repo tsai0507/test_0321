@@ -1,0 +1,96 @@
+#include <iostream>
+#include <sstream>
+using namespace std;
+#include <string>
+
+
+const int R = 5;
+const int C = 4;
+
+class Bitmap {
+private:
+	static const int bmap[10][R];
+	string snum;
+	int scale;
+	
+
+public:
+
+	Bitmap(string sno="",int s=2): snum(sno),scale(s){}
+
+	void setsnum(string sno) { snum = sno; }
+	void setscale(int s) { scale = s; }
+
+	friend ostream& operator<<(ostream& os, Bitmap item);
+};
+int main(void) {
+	int s=0;
+	string sno;
+	Bitmap foo;
+	
+	while (1) {
+		cout << ">";
+		cin >> sno;
+		foo.setsnum(sno);
+		cout << foo;
+		/*
+		for (s = 1; s < 4; ++s) {
+			cout << foo * s << endl;
+		}
+		*/
+		cout << endl;
+	}
+	
+	
+	return 0;
+}
+
+const int Bitmap::bmap[10][R] = {
+	{15,9,9,9,15},{2,6,2,2,7},{15,1,15,8,15},
+	{15,1,7,1,15},{9,9,15,1,1},{15,8,15,1,15},
+	{15,8,15,9,15},{15,1,2,4,8},{15,9,15,9,15},
+	{15,9,15,1,15}
+};
+
+ostream& operator<<(ostream& os, Bitmap item) {
+	string number = item.snum;
+	auto L = number.size();
+	string::size_type j = 0, num, e = 0;
+	stringstream input;
+	int w,k,change=item.scale;
+	
+	for ( ; e < 5; ++e) {
+		do {
+			input << number[j];
+			input >> num;
+			input.clear();
+			k = item.bmap[num][e];
+
+			for (int b = 4, temp = 0; b >=0; --b) {
+				w = item.scale;
+				while (w >= 1) {
+					temp = (k >> b);
+					if (temp % 2 == 0)
+						cout << " ";
+					else
+						cout << number[j];
+					--w;
+				}
+			}
+			++j;
+			if (change > 1) {
+				--change;
+				cout << endl;
+				--j;
+				continue;
+			};
+			
+		}while (j < L); //換矩陣行
+		change = item.scale;
+		j = 0;
+		
+		cout << endl;
+	}
+
+	return os;
+};
